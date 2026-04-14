@@ -84,11 +84,6 @@ require("lazy").setup({
   "williamboman/mason-lspconfig.nvim",
   { "mfussenegger/nvim-jdtls", ft = "java" },
 
-  "udalov/kotlin-vim",
-  "hashivim/vim-vagrant",
-
-  "rust-lang/rust.vim",
-
   "ledger/vim-ledger",
   "github/copilot.vim",
 })

@@ -47,7 +47,18 @@ require("lazy").setup({
     end,
   },
 
-  "vim-airline/vim-airline",
+  {
+    "nvim-lualine/lualine.nvim",
+    config = function()
+      require("lualine").setup({
+      options = { theme = "auto", globalstatus = true },
+        tabline = {
+          lualine_a = { "buffers" },
+          lualine_z = { "tabs" },
+        },
+      })
+    end,
+  },
   "mmozuras/vim-whitespace",
   "fatih/vim-go",
   "scrooloose/nerdtree",
@@ -73,8 +84,6 @@ set background=light
 colorscheme NeoSolarized
 
 set encoding=utf-8
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
 
 " vim-ledger
 let g:ledger_is_hledger=v:false

@@ -11,6 +11,24 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   "Tsuzat/NeoSolarized.nvim",
 
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "master",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = {
+          "bash", "c", "cpp", "diff", "dockerfile", "git_config", "gitcommit",
+          "go", "gomod", "gosum", "gowork", "java", "json", "kotlin", "ledger",
+          "lua", "make", "markdown", "markdown_inline", "python", "rust",
+          "toml", "vim", "vimdoc", "yaml",
+        },
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+    end,
+  },
+
   "tpope/vim-fugitive",
   "airblade/vim-gitgutter",
 
@@ -42,8 +60,6 @@ set background=light
 colorscheme NeoSolarized
 
 set encoding=utf-8
-set statusline+=%#warningmsg#
-set statusline+=%*
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
@@ -181,7 +197,7 @@ nnoremap <C-g> :call ToggleNerdTree()<CR>
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
-	nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gd <plug>(lsp-definition)
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
     nmap <buffer> gr <plug>(lsp-references)

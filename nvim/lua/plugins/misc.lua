@@ -18,8 +18,4 @@ return {
       vim.g.ledger_is_hledger = false
     end,
   },
-  {
-    "github/copilot.vim",
-    event = "InsertEnter",
-  },
 }

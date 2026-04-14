@@ -30,7 +30,12 @@ require("lazy").setup({
   },
 
   "tpope/vim-fugitive",
-  "airblade/vim-gitgutter",
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+    end,
+  },
 
   {
     "nvim-telescope/telescope.nvim",

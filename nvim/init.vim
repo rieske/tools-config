@@ -32,8 +32,20 @@ require("lazy").setup({
   "tpope/vim-fugitive",
   "airblade/vim-gitgutter",
 
-  { "junegunn/fzf", build = ":call fzf#install()" },
-  "junegunn/fzf.vim",
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    },
+    config = function()
+      local telescope = require("telescope")
+      telescope.setup({
+        extensions = { fzf = {} },
+      })
+      telescope.load_extension("fzf")
+    end,
+  },
 
   "vim-airline/vim-airline",
   "mmozuras/vim-whitespace",
@@ -129,16 +141,11 @@ nnoremap E $
 
 set smarttab
 
-" ctrl-p opens fzf
-nnoremap <C-p> :<C-u>FZF<CR>
-"## Solarized Light color scheme for fzf
-"#export FZF_DEFAULT_OPTS="
-"#  --color fg:-1,bg:-1,hl:$blue,fg+:$base02,bg+:$base2,hl+:$blue
-"#  --color info:$yellow,prompt:$yellow,pointer:$base03,marker:$base03,spinner:$yellow
-"#"
-let g:fzf_colors =
-    \ { 'fg': ['fg', 'Black'],
-    \ 'bg': ['bg', 'Black']}
+" Telescope
+nnoremap <C-p> <cmd>Telescope find_files<CR>
+nnoremap <leader>fg <cmd>Telescope live_grep<CR>
+nnoremap <leader>fb <cmd>Telescope buffers<CR>
+nnoremap <leader>fs <cmd>Telescope lsp_document_symbols<CR>
 
 let java_highlight_all=1
 let java_highlight_functions="style"

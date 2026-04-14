@@ -41,9 +41,10 @@ require("lazy").setup({
   "scrooloose/nerdtree",
   "vim-scripts/a.vim",
 
-  "prabirshrestha/async.vim",
-  "prabirshrestha/vim-lsp",
-  "mattn/vim-lsp-settings",
+  "neovim/nvim-lspconfig",
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+  { "mfussenegger/nvim-jdtls", ft = "java" },
 
   "udalov/kotlin-vim",
   "hashivim/vim-vagrant",
@@ -194,41 +195,52 @@ endfunction
 nnoremap <C-g> :call ToggleNerdTree()<CR>
 
 " LSP
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> <f7> <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> <f8> <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <f6> <plug>(lsp-rename)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> <f1> <plug>(lsp-document-diagnostics)
-    nmap <buffer> <f2> <plug>(lsp-code-action)
-    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    " refer to doc to add more commands
-endfunction
+lua << EOF
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "clangd", "gopls", "rust_analyzer", "lua_ls" },
+  automatic_enable = false,
+})
 
-let g:lsp_highlight_references_enabled = 1
-let g:lsp_signs_enabled = 1         " enable signs
-let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+vim.lsp.config("clangd", {
+  cmd = { "clangd", "-cross-file-rename" },
+})
 
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
+vim.lsp.config("lua_ls", {
+  settings = {
+    Lua = {
+      diagnostics = { globals = { "vim" } },
+      workspace = { checkThirdParty = false },
+    },
+  },
+})
 
-"let g:lsp_log_verbose = 1
-"let g:lsp_log_file = expand('~/vim-lsp.log')
+vim.lsp.enable({ "clangd", "gopls", "rust_analyzer", "lua_ls" })
 
-let g:lsp_settings = {
-            \    'clangd': {'cmd': ['clangd', '-cross-file-rename']}
-\}
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local opts = { buffer = args.buf, silent = true }
+    local map = function(lhs, rhs) vim.keymap.set("n", lhs, rhs, opts) end
+
+    vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.wo.signcolumn = "yes"
+
+    map("gd", vim.lsp.buf.definition)
+    map("gs", vim.lsp.buf.document_symbol)
+    map("gS", vim.lsp.buf.workspace_symbol)
+    map("gr", vim.lsp.buf.references)
+    map("<F7>", vim.lsp.buf.references)
+    map("gi", vim.lsp.buf.implementation)
+    map("<F8>", vim.lsp.buf.implementation)
+    map("gt", vim.lsp.buf.type_definition)
+    map("<F6>", vim.lsp.buf.rename)
+    map("<leader>rn", vim.lsp.buf.rename)
+    map("<F1>", vim.diagnostic.setloclist)
+    map("<F2>", vim.lsp.buf.code_action)
+    map("[g", vim.diagnostic.goto_prev)
+    map("]g", vim.diagnostic.goto_next)
+    map("K", vim.lsp.buf.hover)
+  end,
+})
+EOF
 

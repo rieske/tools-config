@@ -1,0 +1,21 @@
+{
+  "NeoSolarized.nvim": { "branch": "master", "commit": "3c55ad358c062aa4879950c4f83b4deeac6b72df" },
+  "a.vim": { "branch": "master", "commit": "2cbe946206ec622d9d8cf2c99317f204c4d41885" },
+  "async.vim": { "branch": "master", "commit": "2082d13bb195f3203d41a308b89417426a7deca1" },
+  "copilot.vim": { "branch": "release", "commit": "a12fd5672110c8aa7e3c8419e28c96943ca179be" },
+  "fzf": { "branch": "master", "commit": "06e70570e2088605d61f18b127356e5680f7f599" },
+  "fzf.vim": { "branch": "master", "commit": "b9624aa012ddcbae9e79964bfd30cc1fbe3cf263" },
+  "kotlin-vim": { "branch": "master", "commit": "53fe045906df8eeb07cb77b078fc93acda6c90b8" },
+  "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
+  "nerdtree": { "branch": "master", "commit": "690d061b591525890f1471c6675bcb5bdc8cdff9" },
+  "rust.vim": { "branch": "master", "commit": "889b9a7515db477f4cb6808bef1769e53493c578" },
+  "vim-airline": { "branch": "master", "commit": "609e5c0ee171c370ad727b0b833e66fd34772aeb" },
+  "vim-fugitive": { "branch": "master", "commit": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0" },
+  "vim-gitgutter": { "branch": "main", "commit": "21c977e8597c468c7dc76001389b0b430d46a4b0" },
+  "vim-go": { "branch": "master", "commit": "f4b4ba17035aebcd222df90375c1cbb1dc4d8c5b" },
+  "vim-ledger": { "branch": "master", "commit": "4f2d93dd914f625e2d3db47d97bd9f428fedd68f" },
+  "vim-lsp": { "branch": "master", "commit": "0c49560e5fbc97876e51bef6b993e48677cc15fc" },
+  "vim-lsp-settings": { "branch": "master", "commit": "a0ec2ee4e75a14f2471896a1192c1970d7be4258" },
+  "vim-vagrant": { "branch": "master", "commit": "7741242ed9617ed53ba7e47e801634b819047ac0" },
+  "vim-whitespace": { "branch": "master", "commit": "89a8960b0cc455a87e8eb9785c3cebd1c81dfb30" }
+}

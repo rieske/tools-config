@@ -65,8 +65,18 @@ require("lazy").setup({
     end,
   },
   "mmozuras/vim-whitespace",
-  "fatih/vim-go",
-  "scrooloose/nerdtree",
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+      require("nvim-tree").setup({
+        update_focused_file = { enable = true },
+      })
+      vim.keymap.set("n", "<C-g>", "<cmd>NvimTreeToggle<CR>", { silent = true })
+    end,
+  },
   "vim-scripts/a.vim",
 
   "neovim/nvim-lspconfig",
@@ -165,55 +175,34 @@ let java_highlight_all=1
 let java_highlight_functions="style"
 let java_allow_cpp_keywords=1
 
-" vim-go
-let g:go_fmt_command = "goimports"    " Run goimports along gofmt on each save
-let g:go_auto_type_info = 1           " Automatically get signature/type info for object under cursor
-let g:go_doc_popup_window = 1
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
-let g:go_rename_command='gopls'
-"au filetype go inoremap <buffer> . .<C-x><C-o>
+" Go: format + organize imports on save (via gopls)
+lua << EOF
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = { only = { "source.organizeImports" } }
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+    for _, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then vim.lsp.util.apply_workspace_edit(r.edit, "utf-16") end
+      end
+    end
+    vim.lsp.buf.format({ async = false })
+  end,
+})
+EOF
 
 " Persistent undo
 set undofile
 set undolevels=1000
 set undoreload=10000
 
-" NERDtree
-
-" If more than one window and previous buffer was NERDTree, go back to it.
-autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
-
 "Switch between different windows by their direction`
 no <C-j> <C-w>j| "switching to below window
 no <C-k> <C-w>k| "switching to above window
 no <C-l> <C-w>l| "switching to right window
 no <C-h> <C-w>h| "switching to left window
-
-" Check if NERDTree is open or active
-function! IsNERDTreeOpen()
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
-
-" Call NERDTreeFind if NERDTree is active, current window contains a modifiable
-" file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
-  endif
-endfunction
-
-" Highlight currently open buffer in NERDTree
-autocmd BufEnter * call SyncTree()
-
-function! ToggleNerdTree()
-  set eventignore=BufEnter
-  NERDTreeToggle
-  set eventignore=
-endfunction
-
-nnoremap <C-g> :call ToggleNerdTree()<CR>
 
 " LSP
 lua << EOF

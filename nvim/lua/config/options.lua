@@ -5,6 +5,9 @@ vim.opt.background = "light"
 -- Files
 vim.opt.swapfile = false
 
+-- Clipboard: yank/put use the system clipboard (via wl-copy)
+vim.opt.clipboard = "unnamedplus"
+
 -- UI
 vim.opt.number = true
 vim.opt.showmatch = true

@@ -1,0 +1,22 @@
+onboarding = false
+[theme]
+name = "solarized-light"
+auto_switch = false
+
+[ui]
+agent_panel_sort = "spaces"
+# Alt+right-click forwards to the pane app (e.g. nvim's popup menu); plain right-click keeps Herdr's pane menu
+right_click_passthrough_modifier = "alt"
+
+show_agent_labels_on_pane_borders = true
+[keys]
+# Pane navigation, matching tmux (Alt+vim keys / Alt+arrows, no prefix)
+focus_pane_left = ["alt+h", "alt+left"]
+focus_pane_down = ["alt+j", "alt+down"]
+focus_pane_up = ["alt+k", "alt+up"]
+focus_pane_right = ["alt+l", "alt+right"]
+# Tab switching, matching tmux window switching (Shift+arrows, no prefix)
+previous_tab = "shift+left"
+next_tab = "shift+right"
+# Stacked split, matching tmux prefix+"
+split_horizontal = "prefix+\""

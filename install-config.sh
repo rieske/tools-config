@@ -10,3 +10,7 @@ rm -f ~/.tmux.conf
 ln -s ${PWD}/tmux/.tmux.conf ~/.tmux.conf
 rm -rf ~/.tmux
 ln -s ${PWD}/tmux/.tmux ~/.tmux
+
+mkdir -p ~/.config/herdr
+rm -f ~/.config/herdr/config.toml
+ln -s ${PWD}/herdr/config.toml ~/.config/herdr/config.toml
